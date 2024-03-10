@@ -4,6 +4,8 @@ cryptography==42.0.5
 Django==5.0.3
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
+gunicorn==21.2.0
+packaging==23.2
 pillow==10.2.0
 pycparser==2.21
 PyJWT==2.8.0
