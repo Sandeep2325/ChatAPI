@@ -1,13 +1,26 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, PermissionsMixin,BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
-class User(AbstractUser):
+
+class UserManager(BaseUserManager):
+    def create_superuser(self, email,password=None, **extra_fields):
+        if not email:
+            raise ValueError("User must have an email")
+        if not password:
+            raise ValueError("User must have a password")
+        user = self.model(
+            email=self.normalize_email(email)
+        )
+class User(AbstractUser,PermissionsMixin):
+    username = None
     email = models.EmailField(_('email address'), unique=True)
     phone_no = models.CharField(max_length=13, null=True, unique=True,verbose_name="Mobile number")
     photo=models.ImageField(upload_to='profile',verbose_name="Profile photo", null=True, blank=True)
     is_verified=models.BooleanField(default=False)
-
+    USERNAME_FIELD="email"
+    REQUIRED_FIELDS = []
+    objects = UserManager()
     def __str__(self):
         return "{}".format(str(self.email))
 class Message(models.Model):

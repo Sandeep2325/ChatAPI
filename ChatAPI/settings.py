@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["sandeep2325.pythonanywhere.com","*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -72,8 +73,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ChatAPI.wsgi.application'
+ASGI_APPLICATION = 'ChatAPI.asgi.application'
 AUTH_USER_MODEL = 'api.User'
-
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "email"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -111,6 +113,18 @@ REST_FRAMEWORK = {
     )
    
 }
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=100),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=150),
+    }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -132,7 +146,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_TRUSTED_ORIGINS  = ["http://localhost:3000","*"]
+CSRF_TRUSTED_ORIGINS  = ["http://localhost:3000"]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]

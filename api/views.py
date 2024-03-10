@@ -6,6 +6,9 @@ from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 # Create your views here.
 @csrf_exempt
 def home(request):
@@ -16,12 +19,23 @@ def home(request):
     return JsonResponse({"Post":name})
 
 class UserViewSet(APIView):
+    permission_classes=(IsAuthenticated,)
+    authentication_classes=[JWTAuthentication,]
     def get(self, request, format=None):
+        
         """
         Return a list of all users.
         """
-        usernames = [user.username for user in User.objects.all()]
-        return Response(usernames)
+        try:
+            user_obj=User.objects.exclude(id=request.user.id)
+            serializer=UserSerializer(user_obj,many=True)
+            return Response(serializer.data, status=200)
+        except Exception as e:
+            print("error in getting userlist", (e))
+            return Response({"error":"Error getting user list"}, status=400)
+    
+
+class Register(APIView):
     def post(self, request):
         print(request.data)
         serializer = UserSerializer(data=request.data)
@@ -29,3 +43,7 @@ class UserViewSet(APIView):
             serializer.save()
             return Response({"message": "Account created successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"error":"Something went wrong","data":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+class MessageListCreate(generics.ListCreateAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer

@@ -7,6 +7,8 @@ router = routers.DefaultRouter()
 urlpatterns = [
       path("",home, name="home" ),
       path("users/",UserViewSet.as_view()),
-      path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+      path("register/",Register.as_view()),
+      path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+      path('messages/', MessageListCreate.as_view(), name='message-list-create'),
 ]
 urlpatterns += router.urls
