@@ -7,8 +7,8 @@ class JWTWEBsocketMiddleware(BaseMiddleware):
     async def __call__(self, scope, recieve, send):
         close_old_connections()
         query_string=scope.get("query_string", b"").decode("utf-8")
-        quesry_parameters=dict(qp.split("=") for qp in query_string.split("&"))
-        token=quesry_parameters.get("token", None)
+        query_parameters=dict(qp.split("=") for qp in query_string.split("&"))
+        token=query_parameters.get("token", None)
        
         if token is None:
             await send({
