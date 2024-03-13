@@ -25,13 +25,14 @@ SECRET_KEY = 'django-insecure-v8slp*bs3z(aqhn*oo-5dqvtif_os1v5e)*b+-yhj0b0=&brq5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["sandeep2325.pythonanywhere.com","*"]
+ALLOWED_HOSTS = ["sandeep2325.pythonanywhere.com","*",".vercel.app"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'daphne',
+    # 'uvicorn',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

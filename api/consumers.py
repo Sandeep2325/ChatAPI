@@ -59,7 +59,6 @@ class PersonalChatConsumer(AsyncWebsocketConsumer):
             user_ids = [sender_id, recipient_id]
             user_ids.sort()
             self.room_group_name = f"chat_{user_ids[0]}_{user_ids[1]}"
-            print("Recieve-----",self.room_group_name)
             # print("Connect-----",self.channel_name)
             await self.channel_layer.group_send(
                 self.room_group_name,
