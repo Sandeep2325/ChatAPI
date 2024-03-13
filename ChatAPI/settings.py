@@ -150,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS  = ["http://localhost:3000",".vercel.app","*"]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    ".vercel.app"
+    ".vercel.app",
     "*"
 ]
 
