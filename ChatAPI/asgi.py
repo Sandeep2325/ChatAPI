@@ -16,12 +16,10 @@ from api.routing import *
 from api.channels_middleware import JWTWEBsocketMiddleware
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ChatAPI.settings')
 # settings.configure()
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket":JWTWEBsocketMiddleware(AuthMiddlewareStack(URLRouter(
-            websocket_urlpatterns
-        ))) 
-    # "websocket":URLRouter(
-    #         websocket_urlpatterns
-    #     )
-})
+# application = ProtocolTypeRouter({
+#     "http": get_asgi_application(),
+#     "websocket":JWTWEBsocketMiddleware(AuthMiddlewareStack(URLRouter(
+#             websocket_urlpatterns
+#         ))) 
+
+# })

@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ["sandeep2325.pythonanywhere.com","*",".vercel.app"]
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
+    # 'daphne',
     # 'uvicorn',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -74,7 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ChatAPI.wsgi.application'
-ASGI_APPLICATION = 'ChatAPI.asgi.application'
+# ASGI_APPLICATION = 'ChatAPI.asgi.application'
 AUTH_USER_MODEL = 'api.User'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "email"
 # Database
