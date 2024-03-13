@@ -9,6 +9,8 @@ from rest_framework import status
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .tokenverify import verify_and_extract_token_data
+import json
 # Create your views here.
 @csrf_exempt
 def home(request):
@@ -47,3 +49,15 @@ class Register(APIView):
 class MessageListCreate(generics.ListCreateAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+async def get_token_data(request):
+    if request.method=="POST":
+        token=request.POST.get["token"]
+        res=verify_and_extract_token_data(token)
+        return res
+    else:
+        print(request.GET["token"])
+        token=request.GET["token"]
+        res=await verify_and_extract_token_data(token)
+        id={"id":res.id}
+        return JsonResponse(id, safe=False)
