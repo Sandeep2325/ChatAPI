@@ -81,9 +81,7 @@ class PersonalChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message=event["message"]
         print("eventttt------",event)
-        # recipient_id=event["recipient_id"]
         try:
-            # user=User.objects.get(id=str(recipient_id))
             await self.send(text_data=json.dumps({
             "message":message,
         }))
