@@ -3,3 +3,8 @@ from .models import *
 # Register your models here.
 admin.site.register(User)
 admin.site.register(Message)
+admin.site.register(ImageModel)
+
+admin.site.register(BenefitsModel)
+admin.site.register(CoursesModel)
+

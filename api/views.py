@@ -50,6 +50,26 @@ class MessageListCreate(generics.ListCreateAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
 
+class BenefitsView(APIView):
+    def get(self, request):
+        try:
+            benefits_model=BenefitsModel.objects.all()
+            serializer=BenefitSerailizer(benefits_model, many=True)
+            print(serializer.data)
+            return Response({"data":serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error":"Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+class CoursesView(APIView):
+    def get(self, request):
+        try:
+            model=CoursesModel.objects.all()
+            serializer=CoursesModelSerializer(model, many=True)
+            print(serializer.data)
+            return Response({"data":serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error":"Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
 async def get_token_data(request):
     if request.method=="POST":
         token=request.POST.get["token"]

@@ -36,4 +36,24 @@ class Message(models.Model):
         return str(self.fromUser.user.email + self.toUser.user.email+  self.fromUser.message)
 
 
+class BenefitsModel(models.Model):
+    priornum=models.CharField(max_length=2, null=True, blank=True)
+    title=models.CharField(max_length=150, null=True, blank=True)
+    description=models.TextField(null=True, blank=True)
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
 
+class ImageModel(models.Model):
+    image=models.ImageField(null=True, blank=True, upload_to="ImageBucket")
+    created_at=models.DateTimeField(auto_now_add=True, null=True)
+    updated_at=models.DateTimeField(auto_now=True, null=True)
+
+class CoursesModel(models.Model):
+    title=models.CharField(max_length=150, null=True, blank=True)
+    description=models.TextField(null=True, blank=True)
+    author=models.CharField(max_length=150, null=True, blank=True)
+    experience=models.CharField(max_length=150, null=True, blank=True)
+    weeks=models.IntegerField(null=True, blank=True)
+    images=models.ManyToManyField(ImageModel)
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)

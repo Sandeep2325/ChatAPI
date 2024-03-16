@@ -20,3 +20,19 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = '__all__'
+
+class BenefitSerailizer(serializers.ModelSerializer):
+    class Meta:
+        model= BenefitsModel
+        fields="__all__"
+class ImageModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImageModel
+        fields = '__all__'
+
+class CoursesModelSerializer(serializers.ModelSerializer):
+    images = ImageModelSerializer(many=True, read_only=True)
+    class Meta:
+        model = CoursesModel
+        depth=1
+        fields = '__all__'

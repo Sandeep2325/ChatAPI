@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["sandeep2325.pythonanywhere.com","*",".vercel.app"]
 INSTALLED_APPS = [
     'daphne',
     # 'uvicorn',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -144,11 +145,14 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
 
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_TRUSTED_ORIGINS  = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS  = ["http://localhost:3000", "http://localhost:3000"]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]

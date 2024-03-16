@@ -10,7 +10,10 @@ urlpatterns = [
       path("register/",Register.as_view()),
       path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
       path('messages/', MessageListCreate.as_view(), name='message-list-create'),
-      path('getdata/', get_token_data, name='get data'),
+      path('benefits/', BenefitsView.as_view(), name='Benefits'),
+      path('courses/', CoursesView.as_view(), name='Courses'),
 
+      path('getdata/', get_token_data, name='get data'),
+      
 ]
 urlpatterns += router.urls
