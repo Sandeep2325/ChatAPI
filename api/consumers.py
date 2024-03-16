@@ -2,6 +2,8 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from . models import *
+from channels.db import database_sync_to_async
+
 class PersonalChatConsumer(AsyncWebsocketConsumer):
    
     async def connect(self):
@@ -43,17 +45,11 @@ class PersonalChatConsumer(AsyncWebsocketConsumer):
         message = data["newMessage"]["message"]
         recipient_id = data["newMessage"]["recipient_id"]
         sender_id=data["newMessage"]["sender_id"]
-        request_user=self.scope["user"]
+        # request_user=self.scope["user"]
+        key_id=data["newMessage"]["id"]
         # sender=False
         print(data)
         try:
-            # if request_user.id==int(recipient_id):
-            #     sender=False
-            # else:
-            #     sender=True
-
-            # Retrieve the recipient user based on their email address
-            # recipient_user = User.objects.get(email=recipient_email)
             recipient_id = int(recipient_id)
             sender_id = self.scope["user"].id
             user_ids = [sender_id, recipient_id]
@@ -65,10 +61,19 @@ class PersonalChatConsumer(AsyncWebsocketConsumer):
                 {
                     "type": "chat_message",
                     "message": message,
+                    "id":key_id,
+                    "sender_id":sender_id
                     # "sender":sender,
 
                 }
             )
+            data={
+                "thread":self.room_group_name,
+                "sender_id":sender_id,
+                "reciver_id":recipient_id,
+                "message":message
+            }
+            self.save_messages(data)
         except User.DoesNotExist:
             print(f"User with email '{recipient_id}' does not exist.")
 
@@ -80,11 +85,28 @@ class PersonalChatConsumer(AsyncWebsocketConsumer):
        )
     async def chat_message(self, event):
         message=event["message"]
+        id=event["id"]
+        sender_id=event["sender_id"]
+        # sender=event["sender"]
         print("eventttt------",event)
         try:
             await self.send(text_data=json.dumps({
             "message":message,
+            "id":id,
+            "sender_id":sender_id
+            # "sender":sender
         }))
         except Exception as e:
             print(e)
-       
+    @database_sync_to_async   
+    def save_messages(self,data):
+        print("---------------")
+        try:
+            sender=User.objects.get(id=int(data["sender_id"]))
+            reciever=User.objects.get(id=int(data["recipient_id"]))
+            message=data["message"]
+            thread=data["thread"]
+            Message.objects.create(sender=sender, reciever=reciever, thread_name=thread, message=message).save()
+            print("------saved------")
+        except Exception as e:
+            print(e)

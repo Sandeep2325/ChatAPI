@@ -9,6 +9,8 @@ from rest_framework import status
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .tokenverify import verify_and_extract_token_data
+import json
 # Create your views here.
 @csrf_exempt
 def home(request):
@@ -47,3 +49,35 @@ class Register(APIView):
 class MessageListCreate(generics.ListCreateAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+class BenefitsView(APIView):
+    def get(self, request):
+        try:
+            benefits_model=BenefitsModel.objects.all()
+            serializer=BenefitSerailizer(benefits_model, many=True)
+            print(serializer.data)
+            return Response({"data":serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error":"Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+class CoursesView(APIView):
+    def get(self, request):
+        try:
+            model=CoursesModel.objects.all()
+            serializer=CoursesModelSerializer(model, many=True)
+            print(serializer.data)
+            return Response({"data":serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error":"Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+async def get_token_data(request):
+    if request.method=="POST":
+        token=request.POST.get["token"]
+        res=verify_and_extract_token_data(token)
+        return res
+    else:
+        print(request.GET["token"])
+        token=request.GET["token"]
+        res=await verify_and_extract_token_data(token)
+        id={"id":res.id}
+        return JsonResponse(id, safe=False)
